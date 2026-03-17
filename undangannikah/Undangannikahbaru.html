@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wedding of Jonar & Boru</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        
+        :root {
+            --gold-primary: #c5a059;
+            --gold-light: #e0c58e;
+            --dark-bg: #0f0f0f;
+            --card-bg: rgba(20, 20, 20, 0.9);
+            --text-main: #f2f2f2;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--dark-bg);
+            color: var(--text-main);
+            font-family: 'Cormorant Garamond', serif;
+            overflow: hidden;
+            line-height: 1.6;
+        }
+
+        .fixed-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070') no-repeat center center;
+            background-size: cover;
+            z-index: -1;
+        }
+
+        /* --- TIRAI COVER --- */
+        .cover {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100vh;
+            background: radial-gradient(circle, #2c2c2c 0%, #0a0a0a 100%);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 1.5s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+
+        .cover.open { transform: translateY(-100%); opacity: 0; visibility: hidden; }
+
+        .cover-content { text-align: center; padding: 30px; border: 1px solid var(--gold-primary); outline: 4px solid var(--gold-primary); outline-offset: 10px; background: rgba(0,0,0,0.5); }
+
+        .bulang-img { width: 160px; filter: drop-shadow(0 0 15px var(--gold-primary)); margin-bottom: 20px; }
+
+        .cover h3 { font-family: 'Montserrat', sans-serif; letter-spacing: 6px; font-size: 11px; color: var(--gold-light); text-transform: uppercase; }
+
+        .cover h1 { font-family: 'Cinzel', serif; font-size: 3rem; color: var(--gold-primary); margin: 15px 0; }
+
+        .btn-open {
+            margin-top: 25px; padding: 12px 35px; background: transparent; 
+            border: 1px solid var(--gold-primary); color: var(--gold-primary);
+            font-family: 'Montserrat', sans-serif; font-weight: bold; cursor: pointer;
+            transition: 0.5s; text-transform: uppercase; letter-spacing: 2px;
+        }
+        .btn-open:hover { background: var(--gold-primary); color: black; box-shadow: 0 0 20px var(--gold-primary); }
+
+        /* --- CONTENT --- */
+        .container { max-width: 850px; margin: 0 auto; padding: 0 15px; }
+
+        .section-box {
+            background: var(--card-bg);
+            margin: 80px 0; padding: 50px 30px;
+            border-radius: 8px; border-top: 4px solid var(--gold-primary);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            text-align: center; position: relative;
+        }
+
+        /* --- REVISI 1: THE WEDDING OF --- */
+        .the-wedding {
+            font-family: 'Montserrat', serif;
+            font-size: 1.5rem;
+            color: var(--gold-primary);
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .quran-logo { width: 70px; margin-bottom: 20px; filter: invert(1) sepia(1) saturate(5) hue-rotate(10deg); }
+
+        .teks-arab { font-size: 1.8rem; margin: 20px 0; direction: rtl; font-family: serif; color: var(--gold-light); }
+
+        /* Profil Mempelai */
+        .photo-frame {
+            width: 240px; height: 300px; margin: 0 auto 15px;
+            border: 1px solid var(--gold-primary); padding: 8px;
+            background: rgba(255,255,255,0.03);
+        }
+        .photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+
+        .section-icon { width: 45px; margin-bottom: 10px; filter: drop-shadow(0 0 5px var(--gold-primary)); }
+
+        /* --- REVISI 4: TURUT MENGUNDANG --- */
+       .scroll-list {
+    max-height: 450px; /* Tinggikan dikit biar muat banyak */
+    overflow-y: scroll; /* Paksa munculkan scrollbar jika penuh */
+    padding-right: 15px;
+    text-align: left;
+}
+
+/* Mempercantik Scrollbar agar tamu tahu ini bisa di-scroll */
+.scroll-list::-webkit-scrollbar {
+    width: 6px;
+}
+.scroll-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+.scroll-list::-webkit-scrollbar-thumb {
+    background: var(--gold-primary);
+    border-radius: 10px;
+}
+
+.scroll-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(197, 160, 89, 0.15);
+    /* Menghilangkan AOS per item karena sering bikin bug di dalam scroll-box */
+    /* Kita pakai animasi standar CSS saja */
+    animation: slideIn 0.5s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Efek muncul berurutan (Stagger) tanpa AOS */
+.scroll-item:nth-child(n) { animation-delay: calc(0.1s * var(--i, 1)); }
+
+.nama-undangan {
+    text-align: left;
+    flex: 1; /* Mengambil ruang sisa di kiri */
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.status-undangan {
+    text-align: right;
+    white-space: nowrap; /* Agar tulisan (Adek) dkk tidak turun ke bawah */
+    color: var(--gold-primary);
+    font-style: italic;
+    font-size: 0.85rem;
+}
+
+.inner-scroll-box {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--gold-primary);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+.scroll-list {
+    max-height: 400px; /* Sesuaikan tinggi kotak scroll */
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+        .scroll-list { height: 250px; overflow-y: auto; padding-right: 10px; }
+        .scroll-item { 
+            display: flex; justify-content: space-between; border-bottom: 1px solid rgba(197, 160, 89, 0.1);
+            padding: 8px 0; font-family: 'Montserrat', sans-serif; font-size: 13px;
+        }
+        .scroll-item span:first-child { text-align: left; font-weight: 600; }
+        .scroll-item span:last-child { text-align: right; font-style: italic; opacity: 0.8; }
+
+        /* --- GALLERY --- */
+        .marquee { overflow: hidden; display: flex; gap: 20px; margin: 30px 0; }
+        .marquee-inner { display: flex; gap: 20px; animation: marquee 35s linear infinite; }
+        .marquee-inner .col { display: flex; flex-direction: column; gap: 20px; }
+        .marquee-inner img { width: 200px; height: 280px; object-fit: cover; border: 1px solid var(--gold-primary); }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* Countdown */
+        .countdown { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+        .cd-box { border: 1px solid var(--gold-primary); padding: 12px; min-width: 75px; background: rgba(0,0,0,0.3); }
+        .cd-box span { display: block; font-size: 1.8rem; font-family: 'Cinzel'; color: var(--gold-primary); }
+
+        /* Animasi berputar */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.music-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 9999;
+    width: 50px;
+    height: 50px;
+    background: var(--gold-primary);
+    border-radius: 50%;
+    border: 2px solid white;
+    cursor: pointer;
+    display: none; /* Muncul setelah klik 'Buka Undangan' */
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+}
+
+/* Class khusus saat musik jalan */
+.music-btn.rotate {
+    animation: spin 5s infinite linear;
+}
+
+/* Class saat musik berhenti (biar nggak kaku) */
+.music-btn.paused {
+    animation-play-state: paused;
+    opacity: 0.8;
+}
+
+        /* REVISI 5: FOOTER TANPA BG */
+        .footer-clean { background: transparent; padding: 60px 20px; text-align: center; color: var(--text-main); }
+
+        .btn-gold { background: var(--gold-primary); border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; font-family: 'Montserrat'; text-transform: uppercase; margin-top: 15px; transition: 0.3s; }
+        .btn-gold:hover { background: white; transform: scale(1.05); }
+        /* Area Wadah Bunga */
+.flower-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Supaya tetap bisa klik tombol di bawahnya */
+    z-index: 999;
+    display: none; /* Muncul setelah klik buka */
+}
+
+/* Partikel Bunga */
+.flower {
+    position: absolute;
+    top: -20px;
+    background: #e0c58e; /* Warna gold bunga */
+    border-radius: 50% 0 50% 50%; /* Bentuk kelopak bunga */
+    opacity: 0.6;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(105vh) rotate(360deg);
+    }
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="fixed-bg"></div>
+
+    <button id="musicBtn" class="music-btn" onclick="controlMusic()">
+        <img src="https://cdn-icons-png.flaticon.com/512/3612/3612233.png" width="22">
+    </button>
+    <audio id="bgm" loop><source src="ssstik.io_1773761467717.mp3" type="audio/mpeg"></audio>
+
+    <div id="cover" class="cover">
+        <div class="cover-content">
+            <img src="Bulang-mandailing-angkola (1).png" class="bulang-img" alt="Bulang">
+            <h3>The Wedding of</h3>
+            <h1>Tanti & Isnan</h1>
+            <p style="font-family: 'Montserrat'; letter-spacing: 3px; margin-bottom: 15px; font-weight: 600; color: var(--gold-light);">28 . 03 . 2026</p>
+            <div style="background: rgba(255,255,255,0.08); padding: 15px; border-radius: 4px;">
+                <p style="font-size: 0.8rem; opacity: 0.7;">Yth. Bapak/Ibu/Saudara/i:</p>
+                <h5 id="guestName" style="font-family: 'Times new roman'; font-size: 1rem; font-weight: 50; ">Nama Tamu</h5>
+            </div>
+            <button class="btn-open" id="btnBuka">Buka Undangan</button>
+        </div>
+    </div>
+<div class="container" id="mainContent">
+    <center>
+            <img src="Bulang-mandailing-angkola (1).png" class="bulang-img" alt="Bulang">
+</center>
+            <h1 class="the-wedding" data-aos="zoom-in"><center>THE WEDDING OF</center></h1>
+            <h1 style="text-align: center; line-height: 1; ">Tanti Khairani Siregar<br>&<br>Isnan Rosidi Harahap</h1>
+
+            </div>       
+            
+    <div class="container" id="mainContent">
+        
+        <section class="section-box" data-aos="fade-up">
+            <img src="https://cdn-icons-png.flaticon.com/128/7220/7220835.png" class="quran-logo" data-aos="flip-right">
+            <div class="teks-arab" data-aos="fade-right"> وَمِنْ ءَايَٰتِهِۦٓ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَٰجًا لِّتَسْكُنُوٓا۟ إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِى ذَٰلِكَ لَءَايَٰتٍ لِّقَوْمٍ يَتَفَكَّرُونَ </div>
+            <p data-aos="fade-left" style="font-size: 1.2rem; line-height: 1.8;">"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir." <br> <b>(QS. Ar-Rum: 21)</b></p>
+            <hr style="margin: 30px 0; border: 0; border-top: 1px solid var(--gold-primary); opacity: 0.3;">
+            <h2 data-aos="zoom-out">Jum'at, 28 Maret 2026</h2>
+        </section>
+
+        <section class="section-box" data-aos="fade-up">
+            <img src="https://cdn-icons-png.flaticon.com/128/18408/18408459.png" class="section-icon" data-aos="zoom-in">
+            <h2 data-aos="fade-down">Kedua Mempelai</h2>
+            
+            <div style="margin-bottom: 50px;">
+                <div class="photo-frame" data-aos="zoom-in-up">
+                    <img src="unnamed.jpg" alt="Mempelai Wanita">
+                </div>
+                <h2 style="font-size: 1.8rem;" data-aos="fade-right">TANTI KHAIRANI SIREGAR, S.Ag</h2>
+                <p data-aos="fade-left">Putri dari Bapak Mhd. Soleh Siregar  & Ibu Rosdiana Daulay </p>
+                <a href="https://www.instagram.com/saya_tanhay_?utm_source=qr&igsh=OG1mcWxtZHZyc241" class="btn-gold" style="font-size: 10px; padding: 5px 15px; text-decoration: none;">Instagram</a>
+            </div>
+
+            <div style="font-family: 'Cinzel'; font-size: 2rem; color: var(--gold-primary); margin: 30px 0;">&</div>
+
+            <div>
+                <div class="photo-frame" data-aos="zoom-in-up">
+                    <img src="unnamed - Salin.jpg" alt="Mempelai Pria">
+                </div>
+                <h2 style="font-size: 1.8rem;" data-aos="fade-left">ISNAN ROSIDI HARAHAP, S.Ds</h2>
+                <p data-aos="fade-right">Putra dari Bapak Alm. Solahuddin Hrp  & Ibu Nur Hawani Siregar </p>
+                <a href="https://www.instagram.com/angin_harahap?igsh=YXBidmUycTBwZHJu" class="btn-gold" style="font-size: 10px; padding: 5px 15px; text-decoration: none;">Instagram</a>
+            </div>
+        </section>
+
+        <section class="section-box" data-aos="fade-up">
+            <img src="https://cdn-icons-png.flaticon.com/512/1077/1077035.png" class="section-icon" data-aos="zoom-in">
+            <h2>Kisah Cinta</h2>
+            <div style="text-align: left; border-left: 2px solid var(--gold-primary); padding-left: 20px; margin-bottom: 30px;" data-aos="fade-right">
+                <h4 style="color: var(--gold-primary); font-family: 'Cinzel';">Awal Bertemu</h4>
+                <p>Tidak ada yang kebetulan di dunia ini, semua sudah tersusun rapi oleh sang maha kuasa. kita tidak bisa memilih kepada siapa kita akan jatuh cinta. kami tetangga dekat yang ketemu gede, bertemu tanpa sengaja pada pertengahan oktober 2025 tepatnya saat beliau pulang kekampung kami, tidak ada yang menyangka bahwa pertemuan itu membawa kami pada suatu ikatan suci. Pendekatan hari demi hari kami saling mengenal. bukan hanya tentang bahagia, tetapi juga tentang perbedaan, luka, dan doa. karena cinta bukan tentang kesempurnaan, melainkan tentang saling bertahan...</p>
+            </div>
+            <div style="text-align: right; border-right: 2px solid var(--gold-primary); padding-right: 20px; margin-bottom: 30px;" data-aos="fade-left">
+                <h4 style="color: var(--gold-primary); font-family: 'Cinzel';">Momen Lamaran</h4>
+                <p>Dengan keyakinan yang kuat, dan restu dari kedua keluarga, kami mengikat sebuah janji dalam lamaran pada 12 desember 2025 sebagai langkah serius ,menuju masa depan bersama....</p>
+            </div>
+            <div style="text-align: left; border-left: 2px solid var(--gold-primary); padding-left: 20px;" data-aos="fade-right">
+                <h4 style="color: var(--gold-primary); font-family: 'Cinzel';">Pernikahan</h4>
+                <p>Kini, dengan niat yang sama dan doa yang menyertai, kami memilih untuk menyempurnakan perjalanan ini dalam ikatan suci pernikahan sebagai awal baru untuk berbagi hidup, tumbuh, dan menua bersama...</p>
+            </div>
+        </section>
+
+        <section class="section-box" data-aos="fade-up">
+            <img src="https://cdn-icons-png.flaticon.com/128/11719/11719932.png" class="section-icon" data-aos="zoom-in">
+            <h2>Waktu & Lokasi</h2>
+            <div style="display: grid; grid-template-columns: 1fr; gap: 30px;">
+                <div style="border: 1px solid rgba(197, 160, 89, 0.3); padding: 25px;" data-aos="flip-up">
+                    <img src="https://cdn-icons-png.flaticon.com/128/13159/13159296.png" style="width: 40px; margin-bottom: 10px; filter: invert(1);">
+                    <h4 style="color: var(--gold-primary); font-family: 'Cinzel';">Akad Nikah</h4>
+                    <h5 style="color: var(--gold-primary); font-family: 'Cinzel';">Jum'at 27.03.2026</h5>
+
+                    <p style="font-weight: 600;">Pukul 14.00 WIB- Selesai</p>
+                    <p>Bagas Godang Mhd. Soleh Siregar / Kediaman Mempelai Wanita</p>
+                </div>
+                <div style="border: 1px solid rgba(197, 160, 89, 0.3); padding: 25px;" data-aos="flip-down">
+                    <img src="https://cdn-icons-png.flaticon.com/128/4567/4567173.png" style="width: 40px; margin-bottom: 10px; filter: invert(1);">
+                    <h4 style="color: var(--gold-primary); font-family: 'Cinzel';">Resepsi & Adat</h4>
+                    <h5 style="color: var(--gold-primary); font-family: 'Cinzel';">Sabtu 28.03.2026</h5>
+
+                    <p style="font-weight: 600;">Pukul 08.00 WIB - Selesai</p>
+                    <p>Bagas Godang Mhd. Soleh Siregar / Kediaman Mempelai Wanita</p>
+                </div>
+            </div>
+            <button class="btn-gold" onclick="window.open('https://maps.app.goo.gl/7rM3EmbZ9CJgNude7')" data-aos="zoom-in">Buka Navigasi Google Maps</button>
+        </section>
+
+        <section class="section-box" data-aos="fade-up">
+            <img src="https://cdn-icons-png.flaticon.com/128/16961/16961114.png" class="section-icon" data-aos="zoom-in">
+            <h2>Countdown</h2>
+            <div id="timer" class="countdown" data-aos="fade-up"></div>
+            <button class="btn-gold" data-aos="zoom-in" onclick="addToCalendar()">Ingatkan di Kalender</button>
+        </section>
+
+        
+
+        <section class="section-box" data-aos="fade-up">
+            <img src="https://cdn-icons-png.flaticon.com/128/3092/3092920.png" class="section-icon" data-aos="zoom-in">
+            <h2>Turut Mengundang</h2>
+            <div style="margin-bottom: 25px;">
+                <h4 style="color: var(--gold-primary); font-family: 'Cinzel';">Keluarga Pihak Wanita</h4>
+                <p>Mhd. Soleh Siregar (Ayah)</p>
+                <p>Rosdiana Daulay (Ibu)</p>
+            </div>
+            <div style="margin-bottom: 25px;">
+                <h4 style="color: var(--gold-primary); font-family: 'Cinzel';">Keluarga Pihak Pria</h4>
+                <p>Alm. Solahuddin Hrp (Ayah)</p>
+                <p>Nur Hawani Siregar (Ibu)</p>
+            </div>
+            
+            <div class="inner-scroll-box" data-aos="fade-up">
+                <div class="scroll-list" id="listUndangan">
+                    </div>
+            </div>
+        </section>
+
+        <div class="footer-clean" data-aos="fade-up">
+            <img src="https://cdn-icons-png.flaticon.com/128/10183/10183006.png" class="section-icon" data-aos="zoom-in">
+            <h2>Kado Digital</h2>
+            <p>Doa Restu Anda merupakan karunia yang sangat berarti bagi kami.<br>Namun jika ingin memberi tanda kasih, dapat melalui:</p>
+            <div style="margin: 20px 0; padding: 20px; border: 1px solid var(--gold-primary); display: inline-block;">
+                <p>Bank BSI: 7337586133</p>
+                <p>A/N: TANTI KHAIRANI</p>
+                <button class="btn-gold" style="padding: 5px 15px;" onclick="copyText('7337586133')">Salin Nomor</button>
+            </div>
+            <section class="section-box" data-aos="fade-up">
+    <img src="https://cdn-icons-png.flaticon.com/128/3159/3159033.png" class="section-icon">
+    <h2>Ucapan & Doa Restu</h2>
+    <p style="margin-bottom: 20px; font-size: 0.9rem;">Berikan ucapan manis untuk kedua mempelai</p>
+    
+    <div style="border: 2px solid var(--gold-primary); border-radius: 15px; overflow: hidden; background: white; box-shadow: 0 0 20px rgba(197, 160, 89, 0.3);">
+        
+        <iframe 
+            src="https://docs.google.com/forms/d/e/1FAIpQLScqolAK_JZ-NQjhMbLk1TXpErx9pC58CaStNnn2E4Y6dal9xA/viewform?usp=publish-editor?embedded=true" 
+            width="100%" 
+            height="550" 
+            frameborder="0" 
+            marginheight="0" 
+            marginwidth="0">
+            Memuat…
+        </iframe>
+
+    </div>
+
+    <p style="margin-top: 15px; font-size: 0.7rem; opacity: 0.5; font-style: italic;">
+        *Rekaman doa Anda akan tersimpan otomatis di sistem kami
+    </p>
+</section>
+            <p style="opacity: 0.8; margin-top: 40px; font-style: italic;">"Kehadiran Anda adalah kado terindah bagi kami."</p>
+            <p style="color: var(--gold-primary); font-size: 1.8rem; margin-top: 10px;">Horas, Horas, Horas!</p>
+            <div style="margin-top: 60px; font-size: 10px; letter-spacing: 2px; opacity: 0.5;">
+                DEVELOPED BY [Rahmad syah Siregar]                
+            </div>
+            <div style="margin-top: 2px; font-size: 10px; letter-spacing: 2px; opacity: 0.5;">
+                WhatsApp: 0821-6275-7915              
+            </div><div style="margin-top: 2px; font-size: 10px; letter-spacing: 2px; opacity: 0.5;">
+                Email: rahmatsyahsiregar80@gmail.com              
+            </div>
+        </div>
+
+    </div>
+
+   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    // 1. Inisialisasi AOS
+    window.addEventListener('load', () => {
+        AOS.init({
+            duration: 1000,
+            once: true,
+            mirror: false
+        });
+    });
+
+    // 2. Data Tamu dari URL
+    const params = new URLSearchParams(window.location.search);
+    document.getElementById('guestName').innerText = params.get('to') || "Tamu Undangan";
+
+    // 3. Logika Musik
+    const bgm = document.getElementById('bgm');
+    const btnBuka = document.getElementById('btnBuka');
+    const musicBtn = document.getElementById('musicBtn');
+    let isPlaying = false;
+
+   btnBuka.onclick = function() {
+    document.getElementById('cover').classList.add('open');
+    document.body.style.overflow = "auto"; // Aktifkan scroll
+    
+    musicBtn.style.display = "flex"; // Munculkan tombol musik
+    controlMusic(true); // Paksa musik jalan
+};
+
+    function controlMusic(force = false) {
+        if (!isPlaying || force) {
+            bgm.play().catch(e => console.log("Audio play blocked")); 
+            musicBtn.classList.add('rotate'); 
+            isPlaying = true;
+        } else {
+            bgm.pause(); 
+            musicBtn.classList.remove('rotate'); 
+            isPlaying = false;
+        }
+    }
+
+    // 4. Data 26 Nama Turut Mengundang
+    const daftarTurutMengundang = [
+        { n: "Amnil Wahidah Siregar,S.Pd / Usman Saleh Hsb, S.Sos", s: "(Kakak/Abang)" },
+        { n: "Ali Sunardi Siregar", s: "(Adek)" },
+        { n: "Rahmad Syah Siregar", s: "(Adek)" },
+        { n: "Asriani Siregar", s: "(Adek)" },
+        { n: "Juma Siregar / Alm. Aziz Hasibuan", s: "(Bou/Amangboru)" },
+        { n: "Gurbas Siregar / Alm. Alam Martua", s: "(Bou/Amangboru)" },
+        { n: "Masniari Siregar / Hilal Hasibuan", s: "(Bou/Amangboru)" },
+        { n: "Ali Kahar Siregar / Surto Hasibuan", s: "(Kakek/Nenek)" },
+        { n: "Saripuddin Siregar / Tiesma Siregar", s: "(Uwak)" },
+        { n: "Parhimpunan Siregar / Nur Sama Hsb", s: "(Uwak)" },
+        { n: "Pandapotan Siregar / Purnama Hrp", s: "(Uda/Nanguda)" },
+        { n: "Torkis Siregar / Masnita Nora Nst", s: "(Uda/Nanguda)" },
+        { n: "Mardan Siregar / Junaida Hsb", s: "(Abang/Kakak)" },
+        { n: "Dori Daulay", s: "(Uwak)" },
+        { n: "Burhan Hasibuan / Lanna Sari", s: "(Amangboru/Bou)" },
+        { n: "Aman Sukri Hsb", s: "(Abang/Kakak)" },
+        { n: "Ishak Hrp / Nurzanna Nst", s: "(Amangboru/Bou)" },
+        { n: "Usman Hasibuan", s: "(Abang/Kakak)" },
+        { n: "Darwin Hrp", s: "(Abang)" },
+        { n: "Kholid Nst / Purnami", s: "(Tulang/Nattulang)" },
+        { n: "H. Sahut Nst / Hj. Madalia", s: "(Tulang/Nattulang)" },
+        { n: "Saparuddin Nasution", s: "(Tulang)" },
+        { n: "Pahlawan", s: "(Oppung)" },
+        { n: "Tayaman Dly / Dahlia Hsb", s: "(Tulang/Nattulang)" },
+        { n: "Doharni Dly / Alm. Mas", s: "(Tobang/Ayatobang)" },
+        { n: "Nurjannah", s: "(Tobang)" }
+    ];
+
+    function renderList() {
+        const container = document.getElementById('listUndangan');
+        if(!container) return;
+        
+        let htmlContent = '';
+        daftarTurutMengundang.forEach((item, i) => {
+            htmlContent += `
+                <div class="scroll-item" style="--i: ${i}">
+                    <span class="nama-undangan">${i + 1}. ${item.n}</span>
+                    <span class="status-undangan">${item.s}</span>
+                </div>
+            `;
+        });
+        container.innerHTML = htmlContent;
+        if(window.AOS) AOS.refresh();
+    }
+    renderList();
+
+    // 5. Fungsi Salin Rekening
+    function copyText(val) {
+        navigator.clipboard.writeText(val);
+        alert("Nomor rekening " + val + " berhasil disalin!");
+    }
+
+    // 6. LOGIKA COUNTDOWN (Pasti Jalan)
+    const countdown = () => {
+        const targetDate = new Date("March 28, 2026 08:00:00").getTime();
+        const now = new Date().getTime();
+        const gap = targetDate - now;
+
+        if (gap <= 0) {
+            document.getElementById('timer').innerHTML = "ACARA SEDANG BERLANGSUNG";
+            return;
+        }
+
+        const d = Math.floor(gap / (1000 * 60 * 60 * 24));
+        const h = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((gap % (1000 * 60)) / 1000);
+
+        document.getElementById('timer').innerHTML = `
+            <div class="cd-box"><span>${d}</span>HARI</div>
+            <div class="cd-box"><span>${h}</span>JAM</div>
+            <div class="cd-box"><span>${m}</span>MENIT</div>
+            <div class="cd-box"><span>${s}</span>DETIK</div>
+        `;
+    };
+
+    // Jalankan timer setiap detik
+    setInterval(countdown, 1000);
+    countdown(); // Panggil sekali di awal supaya gak nunggu 1 detik
+    function addToCalendar() {
+    const event = {
+        title: "The Wedding of Tanti & Isnan",
+        description: "Menghadiri undangan pernikahan Tanti Khairani Siregar & Isnan Rosidi Harahap. Mohon doa restunya!",
+        location: "Bagas Godang Mhd. Soleh Siregar / Kediaman Mempelai Wanita",
+        // Format waktu: YYYYMMDDTHHMMSS (Tahun-Bulan-Hari T Jam-Menit-Detik)
+        start: "20260328T080000", 
+        end: "20260328T170000"
+    };
+
+    const googleUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}&sf=true&output=xml`;
+
+    window.open(googleUrl, '_blank');
+}
+function createFlowers() {
+    const container = document.createElement('div');
+    container.className = 'flower-container';
+    container.id = 'flowerArea';
+    document.body.appendChild(container);
+    container.style.display = 'block';
+
+    setInterval(() => {
+        const flower = document.createElement('div');
+        flower.className = 'flower';
+        
+        // Tentukan ukuran acak bunga
+        const size = Math.random() * 10 + 5 + 'px';
+        flower.style.width = size;
+        flower.style.height = size;
+
+        // LOGIKA KIRI-KANAN:
+        // Kita bagi area: 0-20% (kiri) dan 80-100% (kanan)
+        const side = Math.random() < 0.5 ? 'left' : 'right';
+        if (side === 'left') {
+            flower.style.left = Math.random() * 20 + '%';
+        } else {
+            flower.style.left = (Math.random() * 20 + 80) + '%';
+        }
+
+        // Durasi jatuh acak (biar gak barengan)
+        flower.style.animationDuration = Math.random() * 3 + 4 + 's';
+        flower.style.opacity = Math.random();
+
+        container.appendChild(flower);
+
+        // Hapus bunga setelah jatuh biar gak berat (memory leak)
+        setTimeout(() => {
+            flower.remove();
+        }, 7000);
+    }, 300); // Muncul setiap 0.3 detik
+}
+</script>
+</body>
+</html>
